@@ -39,6 +39,15 @@ class QuestionsController < ApplicationController
     @question.destroy
   end
 
+  # POST /questions/1/attach_image
+  def attach_image
+    @question = Question.find(params[:question_id])
+    filename = "q#{@question.id}#{Rack::Mime::MIME_TYPES.invert[request.content_type]}"
+
+    @question.image.attach(io: request.body, filename: filename, content_type: request.content_type)
+    render json: @question
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_question

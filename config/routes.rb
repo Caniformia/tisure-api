@@ -3,6 +3,7 @@ Rails.application.routes.draw do
     resources :chapters do
       resources :questions do
         resources :choices
+        post 'attach_image'
       end
     end
   end
