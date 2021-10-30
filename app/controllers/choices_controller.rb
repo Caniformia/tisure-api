@@ -1,9 +1,9 @@
 class ChoicesController < ApplicationController
   before_action :set_choice, only: [:show, :update, :destroy]
 
-  # GET /choices
+  # GET /questions/1/choices
   def index
-    @choices = Choice.all
+    @choices = Question.find(params[:question_id]).choices
 
     render json: @choices
   end
@@ -13,9 +13,10 @@ class ChoicesController < ApplicationController
     render json: @choice
   end
 
-  # POST /choices
+  # POST /chapters/1/choices
   def create
     @choice = Choice.new(choice_params)
+    @choice.question = Question.find(params[:question_id])
 
     if @choice.save
       render json: @choice, status: :created, location: @choice

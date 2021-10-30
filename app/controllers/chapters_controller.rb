@@ -1,9 +1,9 @@
 class ChaptersController < ApplicationController
   before_action :set_chapter, only: [:show, :update, :destroy]
 
-  # GET /chapters
+  # GET /subjects/1/chapters
   def index
-    @chapters = Chapter.all
+    @chapters = Subject.find(params[:subject_id]).chapters
 
     render json: @chapters
   end
@@ -13,9 +13,10 @@ class ChaptersController < ApplicationController
     render json: @chapter
   end
 
-  # POST /chapters
+  # POST /subjects/1/chapters
   def create
     @chapter = Chapter.new(chapter_params)
+    @chapter.subject = Subject.find(params[:subject_id])
 
     if @chapter.save
       render json: @chapter, status: :created, location: @chapter

@@ -1,9 +1,9 @@
 class QuestionsController < ApplicationController
   before_action :set_question, only: [:show, :update, :destroy]
 
-  # GET /questions
+  # GET /chapters/1/questions
   def index
-    @questions = Question.all
+    @questions = Chapter.find(params[:chapter_id]).questions
 
     render json: @questions
   end
@@ -13,9 +13,10 @@ class QuestionsController < ApplicationController
     render json: @question
   end
 
-  # POST /questions
+  # POST /chapters/1/questions
   def create
     @question = Question.new(question_params)
+    @question.chapter = Chapter.find(params[:chapter_id])
 
     if @question.save
       render json: @question, status: :created, location: @question
