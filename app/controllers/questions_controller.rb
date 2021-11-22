@@ -48,6 +48,11 @@ class QuestionsController < ApplicationController
     render json: @question
   end
 
+  def records
+    authenticate_user!
+    render json: current_user.records.where(question_id: params[:question_id])
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_question
