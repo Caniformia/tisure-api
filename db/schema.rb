@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_22_122931) do
+ActiveRecord::Schema.define(version: 2021_11_22_123420) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -41,21 +41,21 @@ ActiveRecord::Schema.define(version: 2021_11_22_122931) do
   end
 
   create_table "chapters", force: :cascade do |t|
-    t.string "name"
+    t.string "name", null: false
     t.integer "subject_id", null: false
     t.index ["subject_id"], name: "index_chapters_on_subject_id"
   end
 
   create_table "choices", force: :cascade do |t|
-    t.string "content"
-    t.boolean "is_answer"
+    t.string "content", null: false
+    t.boolean "is_answer", null: false
     t.integer "question_id", null: false
     t.index ["question_id"], name: "index_choices_on_question_id"
   end
 
   create_table "questions", force: :cascade do |t|
-    t.string "content"
-    t.boolean "is_multi_answer"
+    t.string "content", null: false
+    t.boolean "is_multi_answer", null: false
     t.integer "chapter_id", null: false
     t.index ["chapter_id"], name: "index_questions_on_chapter_id"
   end
@@ -65,13 +65,13 @@ ActiveRecord::Schema.define(version: 2021_11_22_122931) do
     t.integer "question_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.boolean "is_correct"
+    t.boolean "is_correct", null: false
     t.index ["question_id"], name: "index_records_on_question_id"
     t.index ["user_id"], name: "index_records_on_user_id"
   end
 
   create_table "subjects", force: :cascade do |t|
-    t.string "name"
+    t.string "name", null: false
   end
 
   create_table "users", force: :cascade do |t|
