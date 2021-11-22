@@ -6,6 +6,7 @@ Rails.application.routes.draw do
         resources :choices do
           get 'stats'
         end
+        resources :comments
         post 'attach_image'
         get 'records'
         get 'stats'

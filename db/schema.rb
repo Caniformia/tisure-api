@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_22_155914) do
+ActiveRecord::Schema.define(version: 2021_11_22_165109) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -56,6 +56,16 @@ ActiveRecord::Schema.define(version: 2021_11_22_155914) do
   create_table "choices_records", id: false, force: :cascade do |t|
     t.integer "choice_id", null: false
     t.integer "record_id", null: false
+  end
+
+  create_table "comments", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "question_id", null: false
+    t.string "content", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["question_id"], name: "index_comments_on_question_id"
+    t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
   create_table "questions", force: :cascade do |t|
@@ -109,6 +119,8 @@ ActiveRecord::Schema.define(version: 2021_11_22_155914) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "chapters", "subjects"
   add_foreign_key "choices", "questions"
+  add_foreign_key "comments", "questions"
+  add_foreign_key "comments", "users"
   add_foreign_key "questions", "chapters"
   add_foreign_key "records", "questions"
   add_foreign_key "records", "users"

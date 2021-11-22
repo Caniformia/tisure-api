@@ -3,4 +3,5 @@ class Question < ApplicationRecord
   has_many :choices
   has_many :records
   has_one_attached :image
+  has_many :comments
 end
