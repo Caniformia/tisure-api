@@ -14,4 +14,9 @@ class ApplicationController < ActionController::API
         } : nil
       }
     end
+
+    def authenticate_admin!
+      authenticate_user!
+      render json: {}, status: :forbidden if user_signed_in? and not current_user.is_admin?
+    end
 end

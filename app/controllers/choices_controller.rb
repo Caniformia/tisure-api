@@ -1,4 +1,5 @@
 class ChoicesController < ApplicationController
+  before_action :authenticate_admin!, only: [:create, :update, :destroy]
   before_action :set_choice, only: [:show, :update, :destroy]
 
   # GET /questions/1/choices

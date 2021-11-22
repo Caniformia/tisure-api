@@ -1,4 +1,6 @@
 class QuestionsController < ApplicationController
+  before_action :authenticate_user!, only: [:records]
+  before_action :authenticate_admin!, only: [:create, :update, :destroy]
   before_action :set_question, only: [:show, :update, :destroy]
 
   # GET /chapters/1/questions
@@ -50,7 +52,6 @@ class QuestionsController < ApplicationController
 
   # GET /questions/1/records
   def records
-    authenticate_user!
     render json: current_user.records.where(question_id: params[:question_id])
   end
 

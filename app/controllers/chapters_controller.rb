@@ -1,4 +1,5 @@
 class ChaptersController < ApplicationController
+  before_action :authenticate_admin!, only: [:create, :update, :destroy]
   before_action :set_chapter, only: [:show, :update, :destroy]
 
   # GET /subjects/1/chapters
