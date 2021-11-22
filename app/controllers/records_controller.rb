@@ -2,6 +2,8 @@ class RecordsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_record, only: [:show, :destroy]
 
+  wrap_parameters include: [*Record.attribute_names, :choice_ids]
+
   # GET /records
   def index
     render json: current_user.records
@@ -14,7 +16,6 @@ class RecordsController < ApplicationController
 
   # POST /records
   def create
-    authenticate_user!
     @record = Record.new(record_params)
     @record.user = current_user
 
@@ -41,6 +42,6 @@ class RecordsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def record_params
-      params.require(:record).permit(:question_id)
+      params.require(:record).permit(:question_id, :is_correct, :choice_ids => [])
     end
 end
