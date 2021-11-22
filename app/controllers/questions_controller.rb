@@ -48,9 +48,16 @@ class QuestionsController < ApplicationController
     render json: @question
   end
 
+  # GET /questions/1/records
   def records
     authenticate_user!
     render json: current_user.records.where(question_id: params[:question_id])
+  end
+
+  # GET /questions/1/stats
+  def stats
+    @question = Question.find(params[:question_id])
+    render json: record_stats(@question.records)
   end
 
   private

@@ -1,5 +1,5 @@
 class RecordsController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: [:stats]
   before_action :set_record, only: [:show, :destroy]
 
   wrap_parameters include: [*Record.attribute_names, :choice_ids]
@@ -29,6 +29,11 @@ class RecordsController < ApplicationController
   # DELETE /records/1
   def destroy
     @record.destroy
+  end
+
+  # GET /stats
+  def stats
+    render json: record_stats(Record.all)
   end
 
   private

@@ -39,6 +39,12 @@ class ChoicesController < ApplicationController
     @choice.destroy
   end
 
+  # GET /choices/1/stats
+  def stats
+    @choice = Choice.find(params[:choice_id])
+    render json: { record_count: @choice.records.count }
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_choice
