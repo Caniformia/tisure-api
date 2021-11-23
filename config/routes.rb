@@ -7,6 +7,7 @@ Rails.application.routes.draw do
           get 'stats'
         end
         resources :comments
+        resources :tags, except: :show
         post 'attach_image'
         get 'records'
         get 'stats'
@@ -15,5 +16,6 @@ Rails.application.routes.draw do
   end
   resources :records
   get 'stats', to: 'records#stats'
+  get 'tags/:name', to: 'tags#show'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

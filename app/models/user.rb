@@ -9,4 +9,5 @@ class User < ActiveRecord::Base
   
   has_many :records
   has_many :comments
+  has_many :tags
 end
