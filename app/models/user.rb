@@ -10,4 +10,5 @@ class User < ActiveRecord::Base
   has_many :records
   has_many :comments
   has_many :question_lists, foreign_key: "owner_id"
+  has_many :tags
 end

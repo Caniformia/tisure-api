@@ -7,6 +7,7 @@ Rails.application.routes.draw do
           get 'stats'
         end
         resources :comments
+        resources :tags, except: :show
         post 'attach_image'
         get 'records'
         get 'stats'
@@ -19,5 +20,6 @@ Rails.application.routes.draw do
   resources :question_list_items
   resources :question_lists
   get 'question_lists/:id/questions', to: 'question_lists#show_questions'
+  get 'tags/:name', to: 'tags#show'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

@@ -11,7 +11,6 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema.define(version: 2021_11_23_113007) do
-
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -109,6 +108,15 @@ ActiveRecord::Schema.define(version: 2021_11_23_113007) do
     t.string "name", null: false
   end
 
+  create_table "tags", force: :cascade do |t|
+    t.string "name", null: false
+    t.integer "user_id", null: false
+    t.integer "question_id", null: false
+    t.index ["name", "user_id", "question_id"], name: "index_tags_on_name_and_user_id_and_question_id", unique: true
+    t.index ["question_id"], name: "index_tags_on_question_id"
+    t.index ["user_id"], name: "index_tags_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "provider", default: "email", null: false
     t.string "uid", default: "", null: false
@@ -148,4 +156,6 @@ ActiveRecord::Schema.define(version: 2021_11_23_113007) do
   add_foreign_key "questions", "chapters"
   add_foreign_key "records", "questions"
   add_foreign_key "records", "users"
+  add_foreign_key "tags", "questions"
+  add_foreign_key "tags", "users"
 end

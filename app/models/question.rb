@@ -7,4 +7,5 @@ class Question < ApplicationRecord
 
   has_many :question_list_items
   has_many :question_lists, through: :question_list_items
+  has_many :tags
 end

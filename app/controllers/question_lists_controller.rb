@@ -35,7 +35,6 @@ class QuestionListsController < ApplicationController
 
   # GET /question_lists/1/questions
   def show_questions
-    print params
     if @question_list.visiblity == "public" || @question_list.owner == current_user
       render json: QuestionListItem.where(:question_list_id => @question_list.id)
     else
@@ -46,7 +45,6 @@ class QuestionListsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_question_list
-      print params
       @question_list = QuestionList.find(params[:id])
     end
 
