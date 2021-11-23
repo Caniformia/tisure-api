@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  resources :question_lists
   mount_devise_token_auth_for 'User', at: 'auth'
   resources :subjects, shallow: true do
     resources :chapters do
@@ -16,5 +15,9 @@ Rails.application.routes.draw do
   end
   resources :records
   get 'stats', to: 'records#stats'
+
+  resources :question_list_items
+  resources :question_lists
+  get 'question_lists/:id/questions', to: 'question_lists#show_questions'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
