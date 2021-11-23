@@ -1,6 +1,8 @@
 class QuestionListsController < ApplicationController
-  before_action :set_question_list, only: [:show, :destroy, :show_questions]
   before_action :authenticate_user!, except: [:show, :show_questions]
+  before_action :set_question_list, only: [:show, :update, :destroy, :show_questions]
+  before_action :authenticate_list_modify, only: [:update, :destroy]
+  before_action :authenticate_list_show, only: [:show, :show_questions]
 
   # GET /question_lists
   def index
@@ -9,11 +11,7 @@ class QuestionListsController < ApplicationController
 
   # GET /question_lists/1
   def show
-    if @question_list.visiblity == "public" || @question_list.owner == current_user
-      render json: @question_list
-    else
-      render json: {}, status: :forbidden
-    end
+    render json: @question_list
   end
 
   # POST /question_lists
@@ -28,6 +26,15 @@ class QuestionListsController < ApplicationController
     end
   end
 
+  # PATCH/PUT /questions/1
+  def update
+    if @question_list.update(question_list_update_params)
+      render json: @question_list
+    else
+      render json: @question_list.errors, status: :unprocessable_entity
+    end
+  end
+
   # DELETE /question_lists/1
   def destroy
     @question_list.destroy
@@ -35,14 +42,22 @@ class QuestionListsController < ApplicationController
 
   # GET /question_lists/1/questions
   def show_questions
-    if @question_list.visiblity == "public" || @question_list.owner == current_user
-      render json: QuestionListItem.where(:question_list_id => @question_list.id)
-    else
-      render json: {}, status: :forbidden
-    end
+    render json: QuestionListItem.where(:question_list_id => @question_list.id)
   end
 
   private
+    def authenticate_list_modify
+      unless @question_list.owner == current_user || current_user.is_admin?
+        render json: {}, status: :forbidden
+      end
+    end
+
+    def authenticate_list_show
+      unless @question_list.visiblity == "public" || @question_list.owner == current_user || current_user.is_admin?
+        render json: {}, status: :forbidden
+      end
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_question_list
       @question_list = QuestionList.find(params[:id])
@@ -51,5 +66,9 @@ class QuestionListsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def question_list_params
       params.require(:question_list).permit(:name, :visiblity, :forked_from_id)
+    end
+
+    def question_list_update_params
+      params.require(:question_list).permit(:name, :visiblity)
     end
 end
