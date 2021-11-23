@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :question_lists
   mount_devise_token_auth_for 'User', at: 'auth'
   resources :subjects, shallow: true do
     resources :chapters do

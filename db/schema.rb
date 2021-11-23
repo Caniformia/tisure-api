@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_22_165109) do
+ActiveRecord::Schema.define(version: 2021_11_23_055957) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -68,6 +68,17 @@ ActiveRecord::Schema.define(version: 2021_11_22_165109) do
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
+  create_table "question_lists", force: :cascade do |t|
+    t.string "name"
+    t.integer "owner_id", null: false
+    t.string "visiblity"
+    t.integer "forked_from_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["forked_from_id"], name: "index_question_lists_on_forked_from_id"
+    t.index ["owner_id"], name: "index_question_lists_on_owner_id"
+  end
+
   create_table "questions", force: :cascade do |t|
     t.string "content", null: false
     t.boolean "is_multi_answer", null: false
@@ -121,6 +132,8 @@ ActiveRecord::Schema.define(version: 2021_11_22_165109) do
   add_foreign_key "choices", "questions"
   add_foreign_key "comments", "questions"
   add_foreign_key "comments", "users"
+  add_foreign_key "question_lists", "question_lists", column: "forked_from_id"
+  add_foreign_key "question_lists", "users", column: "owner_id"
   add_foreign_key "questions", "chapters"
   add_foreign_key "records", "questions"
   add_foreign_key "records", "users"
