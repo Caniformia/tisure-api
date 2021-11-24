@@ -53,7 +53,7 @@ class QuestionListsController < ApplicationController
     end
 
     def authenticate_list_show
-      unless @question_list.visiblity == "public" || @question_list.owner == current_user || current_user.is_admin?
+      unless @question_list.visibility_public? || @question_list.owner == current_user || current_user.is_admin?
         render json: {}, status: :forbidden
       end
     end
@@ -65,10 +65,10 @@ class QuestionListsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def question_list_params
-      params.require(:question_list).permit(:name, :visiblity, :forked_from_id)
+      params.require(:question_list).permit(:name, :visibility, :forked_from_id)
     end
 
     def question_list_update_params
-      params.require(:question_list).permit(:name, :visiblity)
+      params.require(:question_list).permit(:name, :visibility)
     end
 end

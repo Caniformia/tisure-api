@@ -35,7 +35,7 @@ class QuestionListItemsController < ApplicationController
 
     def authenticate_list_show
       @question_list = QuestionList.find(params[:question_list_id])
-      unless @question_list.visiblity == "public" || @question_list.owner == current_user || current_user.is_admin?
+      unless @question_list.visibility_public? || @question_list.owner == current_user || current_user.is_admin?
         render json: {}, status: :forbidden
       end
     end
