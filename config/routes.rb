@@ -16,10 +16,15 @@ Rails.application.routes.draw do
   end
   resources :records
   get 'stats', to: 'records#stats'
+  get 'tags/:name', to: 'tags#show'
 
   resources :question_list_items
   resources :question_lists
   get 'question_lists/:id/questions', to: 'question_lists#show_questions'
-  get 'tags/:name', to: 'tags#show'
+
+  resources :users do
+    get 'question_lists'
+  end
+  get 'user', to: 'users#show_current'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
