@@ -42,7 +42,7 @@ class QuestionListsController < ApplicationController
 
   # GET /question_lists/1/questions
   def show_questions
-    render json: QuestionListItem.where(:question_list_id => @question_list.id)
+    render json: QuestionListItem.where(:question_list_id => @question_list.id), include: ['*.*']
   end
 
   private

@@ -1,5 +1,4 @@
 class QuestionListItemSerializer < ActiveModel::Serializer
-  attributes :id
+  attributes :id, :question_list_id
   has_one :question
-  has_one :question_list
 end
