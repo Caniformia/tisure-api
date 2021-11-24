@@ -31,7 +31,7 @@ class CommentsController < ApplicationController
   def update
     if @comment.user != current_user and not current_user.is_admin?
       render json: {}, status: :forbidden
-    elsif @comment.update(comment_params)
+    elsif @comment.update(comment_update_params)
       render json: @comment
     else
       render json: @comment.errors, status: :unprocessable_entity
@@ -56,5 +56,9 @@ class CommentsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def comment_params
       params.require(:comment).permit(:question_id, :content)
+    end
+
+    def comment_update_params
+      params.require(:comment).permit(:content)
     end
 end
