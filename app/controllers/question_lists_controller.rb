@@ -19,6 +19,18 @@ class QuestionListsController < ApplicationController
     @question_list = QuestionList.new(question_list_params)
     @question_list.owner = current_user
 
+    if @question_list.forked_from
+      @question_list.forked_from.question_list_items.each do |rec|
+        @question_list.questions << rec.question
+      end
+      if @question_list.forked_from.owner == current_user
+        @question_list.forked_from = nil
+      elsif @question_list.forked_from.visibility_private?
+        render json: {}, status: :forbidden
+        return
+      end
+    end
+
     if @question_list.save
       render json: @question_list, status: :created, location: @question_list
     else
@@ -28,7 +40,9 @@ class QuestionListsController < ApplicationController
 
   # PATCH/PUT /questions/1
   def update
-    if @question_list.update(question_list_update_params)
+    if params[:visibility] != 'public' and QuestionList.where(forked_from: @question_list)
+      render json: {}, status: :unprocessable_entity
+    elsif @question_list.update(question_list_update_params)
       render json: @question_list
     else
       render json: @question_list.errors, status: :unprocessable_entity
