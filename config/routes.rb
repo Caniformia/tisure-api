@@ -20,7 +20,6 @@ Rails.application.routes.draw do
 
   resources :question_list_items
   resources :question_lists
-  get 'question_lists/:id/questions', to: 'question_lists#show_questions'
 
   resources :users do
     get 'question_lists'

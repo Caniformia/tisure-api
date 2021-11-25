@@ -1,8 +1,8 @@
 class QuestionListsController < ApplicationController
-  before_action :authenticate_user!, except: [:show, :show_questions]
-  before_action :set_question_list, only: [:show, :update, :destroy, :show_questions]
+  before_action :authenticate_user!, except: [:show]
+  before_action :set_question_list, only: [:show, :update, :destroy]
   before_action :authenticate_list_modify, only: [:update, :destroy]
-  before_action :authenticate_list_show, only: [:show, :show_questions]
+  before_action :authenticate_list_show, only: [:show]
 
   # GET /question_lists
   def index
@@ -38,11 +38,6 @@ class QuestionListsController < ApplicationController
   # DELETE /question_lists/1
   def destroy
     @question_list.destroy
-  end
-
-  # GET /question_lists/1/questions
-  def show_questions
-    render json: QuestionListItem.where(:question_list_id => @question_list.id), include: ['*.*']
   end
 
   private

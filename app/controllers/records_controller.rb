@@ -4,14 +4,9 @@ class RecordsController < ApplicationController
 
   wrap_parameters include: [*Record.attribute_names, :choice_ids]
 
-  # GET /records
-  def index
-    render json: current_user.records
-  end
-
   # GET /records/1
   def show
-      render json: @record
+      render json: @record, include: ['*', 'question.choices']
   end
 
   # POST /records
