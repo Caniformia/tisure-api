@@ -17,4 +17,9 @@ class UsersController < ApplicationController
       render json: user.question_lists.where(visibility: :public)
     end
   end
+
+  def mistakes
+    last_records = current_user.records.group(:question_id).select('*, MAX(created_at)')
+    render json: Record.from(last_records, :records).where(is_correct: false)
+  end
 end
