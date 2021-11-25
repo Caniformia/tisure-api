@@ -1,18 +1,6 @@
 class ChoicesController < ApplicationController
   before_action :authenticate_admin!, only: [:create, :update, :destroy]
-  before_action :set_choice, only: [:show, :update, :destroy]
-
-  # GET /questions/1/choices
-  def index
-    @choices = Question.find(params[:question_id]).choices
-
-    render json: @choices
-  end
-
-  # GET /choices/1
-  def show
-    render json: @choice
-  end
+  before_action :set_choice, only: [:update, :destroy]
 
   # POST /chapters/1/choices
   def create
@@ -20,7 +8,7 @@ class ChoicesController < ApplicationController
     @choice.question = Question.find(params[:question_id])
 
     if @choice.save
-      render json: @choice, status: :created, location: @choice
+      render json: @choice, status: :created
     else
       render json: @choice.errors, status: :unprocessable_entity
     end

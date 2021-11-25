@@ -3,16 +3,9 @@ class QuestionsController < ApplicationController
   before_action :authenticate_admin!, only: [:create, :update, :destroy]
   before_action :set_question, only: [:show, :update, :destroy]
 
-  # GET /chapters/1/questions
-  def index
-    @questions = Chapter.find(params[:chapter_id]).questions
-
-    render json: @questions
-  end
-
   # GET /questions/1
   def show
-    render json: @question
+    render json: @question, include: '*.*'
   end
 
   # POST /chapters/1/questions

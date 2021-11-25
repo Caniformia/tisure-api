@@ -1,30 +1,29 @@
 Rails.application.routes.draw do
   mount_devise_token_auth_for 'User', at: 'auth'
   resources :subjects, shallow: true do
-    resources :chapters do
-      resources :questions do
-        resources :choices do
+    resources :chapters, except: :index do
+      resources :questions, except: :index do
+        resources :choices, except: [:index, :show] do
           get 'stats'
         end
-        resources :comments
-        resources :tags, except: :show
+        resources :comments, except: :index
+        resources :tags, except: [:show, :update]
         post 'attach_image'
         get 'last_record'
         get 'stats'
       end
     end
   end
-  resources :records
-  get 'stats', to: 'records#stats'
   get 'tags/:name', to: 'tags#show'
 
-  resources :question_list_items
+  resources :records, only: :create
+  get 'records/stats', to: 'records#stats'
+  get 'records/mistakes', to: 'records#mistakes'
+
+  resources :question_list_items, only: [:create, :destroy]
   resources :question_lists
 
-  resources :users do
-    get 'question_lists'
-  end
+  resources :users, only: :show
   get 'user', to: 'users#show_current'
-  get 'user/mistakes', to: 'users#mistakes'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

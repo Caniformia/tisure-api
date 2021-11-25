@@ -2,13 +2,6 @@ class ChaptersController < ApplicationController
   before_action :authenticate_admin!, only: [:create, :update, :destroy]
   before_action :set_chapter, only: [:show, :update, :destroy]
 
-  # GET /subjects/1/chapters
-  def index
-    @chapters = Subject.find(params[:subject_id]).chapters
-
-    render json: @chapters
-  end
-
   # GET /chapters/1
   def show
     render json: @chapter

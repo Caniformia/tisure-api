@@ -24,7 +24,7 @@ class TagsController < ApplicationController
     @tag.user = current_user
 
     if @tag.save
-      render json: @tag, status: :created, location: @tag
+      render json: @tag, status: :created
     else
       render json: @tag.errors, status: :unprocessable_entity
     end

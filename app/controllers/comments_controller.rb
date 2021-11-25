@@ -2,13 +2,6 @@ class CommentsController < ApplicationController
   before_action :authenticate_user!, only: [:create, :update, :destroy]
   before_action :set_comment, only: [:show, :update, :destroy]
 
-  # GET /questions/1/comments
-  def index
-    @comments = Question.find(params[:question_id]).comments
-
-    render json: @comments
-  end
-
   # GET /comments/1
   def show
     render json: @comment
@@ -21,7 +14,7 @@ class CommentsController < ApplicationController
     @comment.user = current_user
 
     if @comment.save
-      render json: @comment, status: :created, location: @comment
+      render json: @comment, status: :created
     else
       render json: @comment.errors, status: :unprocessable_entity
     end
