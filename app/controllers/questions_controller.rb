@@ -1,5 +1,5 @@
 class QuestionsController < ApplicationController
-  before_action :authenticate_user!, only: [:records]
+  before_action :authenticate_user!, only: [:last_record]
   before_action :authenticate_admin!, only: [:create, :update, :destroy]
   before_action :set_question, only: [:show, :update, :destroy]
 
@@ -50,9 +50,9 @@ class QuestionsController < ApplicationController
     render json: @question
   end
 
-  # GET /questions/1/records
-  def records
-    render json: current_user.records.where(question_id: params[:question_id])
+  # GET /questions/1/last_record
+  def last_record
+    render json: current_user.records.where(question_id: params[:question_id]).order(created_at: :desc).first
   end
 
   # GET /questions/1/stats

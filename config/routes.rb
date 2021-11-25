@@ -9,7 +9,7 @@ Rails.application.routes.draw do
         resources :comments
         resources :tags, except: :show
         post 'attach_image'
-        get 'records'
+        get 'last_record'
         get 'stats'
       end
     end
