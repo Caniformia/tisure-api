@@ -22,6 +22,7 @@ Rails.application.routes.draw do
 
   resources :question_list_items, only: [:create, :destroy]
   get 'question_lists/share/:link', to: 'question_lists#show_share'
+  get 'question_lists/:id/reset_link', to: 'question_lists#reset_link'
   resources :question_lists
 
   resources :users, only: :show
