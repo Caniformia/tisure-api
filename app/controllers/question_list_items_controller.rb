@@ -21,7 +21,7 @@ class QuestionListItemsController < ApplicationController
 
   private
     def authenticate_list_modify
-      @question_list = QuestionList.find(params[:question_list_id])
+      @question_list = @question_list_item&.question_list || QuestionList.find(params[:question_list_id])
       unless @question_list.owner == current_user || current_user.is_admin?
         render json: {}, status: :forbidden
       end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_24_065620) do
+ActiveRecord::Schema.define(version: 2021_11_26_080040) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -74,6 +74,7 @@ ActiveRecord::Schema.define(version: 2021_11_24_065620) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["question_id"], name: "index_question_list_items_on_question_id"
+    t.index ["question_list_id", "question_id"], name: "index_question_list_items_on_question_list_id_and_question_id", unique: true
     t.index ["question_list_id"], name: "index_question_list_items_on_question_list_id"
   end
 
@@ -84,6 +85,7 @@ ActiveRecord::Schema.define(version: 2021_11_24_065620) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "visibility", null: false
+    t.string "share_link"
     t.index ["forked_from_id"], name: "index_question_lists_on_forked_from_id"
     t.index ["owner_id"], name: "index_question_lists_on_owner_id"
   end

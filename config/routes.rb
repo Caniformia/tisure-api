@@ -21,6 +21,7 @@ Rails.application.routes.draw do
   get 'records/mistakes', to: 'records#mistakes'
 
   resources :question_list_items, only: [:create, :destroy]
+  get 'question_lists/share/:link', to: 'question_lists#show_share'
   resources :question_lists
 
   resources :users, only: :show
