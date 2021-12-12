@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_12_051943) do
+ActiveRecord::Schema.define(version: 2021_12_12_063245) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -40,6 +40,18 @@ ActiveRecord::Schema.define(version: 2021_12_12_051943) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "chapter_progresses", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "chapter_id", null: false
+    t.integer "last_accessed_question_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["chapter_id"], name: "index_chapter_progresses_on_chapter_id"
+    t.index ["last_accessed_question_id"], name: "index_chapter_progresses_on_last_accessed_question_id"
+    t.index ["user_id", "chapter_id"], name: "index_chapter_progresses_on_user_id_and_chapter_id", unique: true
+    t.index ["user_id"], name: "index_chapter_progresses_on_user_id"
+  end
+
   create_table "chapters", force: :cascade do |t|
     t.string "name", null: false
     t.integer "subject_id", null: false
@@ -66,18 +78,6 @@ ActiveRecord::Schema.define(version: 2021_12_12_051943) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["question_id"], name: "index_comments_on_question_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
-  end
-
-  create_table "progresses", force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.integer "subject_id", null: false
-    t.integer "last_accessed_question_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["last_accessed_question_id"], name: "index_progresses_on_last_accessed_question_id"
-    t.index ["subject_id"], name: "index_progresses_on_subject_id"
-    t.index ["user_id", "subject_id"], name: "index_progresses_on_user_id_and_subject_id", unique: true
-    t.index ["user_id"], name: "index_progresses_on_user_id"
   end
 
   create_table "question_list_items", force: :cascade do |t|
@@ -117,6 +117,18 @@ ActiveRecord::Schema.define(version: 2021_12_12_051943) do
     t.boolean "is_correct", null: false
     t.index ["question_id"], name: "index_records_on_question_id"
     t.index ["user_id"], name: "index_records_on_user_id"
+  end
+
+  create_table "subject_progresses", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "subject_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "last_accessed_chapter_id"
+    t.index ["last_accessed_chapter_id"], name: "index_subject_progresses_on_last_accessed_chapter_id"
+    t.index ["subject_id"], name: "index_subject_progresses_on_subject_id"
+    t.index ["user_id", "subject_id"], name: "index_subject_progresses_on_user_id_and_subject_id", unique: true
+    t.index ["user_id"], name: "index_subject_progresses_on_user_id"
   end
 
   create_table "subjects", force: :cascade do |t|
@@ -160,13 +172,13 @@ ActiveRecord::Schema.define(version: 2021_12_12_051943) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "chapter_progresses", "chapters", on_delete: :cascade
+  add_foreign_key "chapter_progresses", "questions", column: "last_accessed_question_id", on_delete: :nullify
+  add_foreign_key "chapter_progresses", "users", on_delete: :cascade
   add_foreign_key "chapters", "subjects"
   add_foreign_key "choices", "questions"
   add_foreign_key "comments", "questions", on_delete: :cascade
   add_foreign_key "comments", "users", on_delete: :cascade
-  add_foreign_key "progresses", "questions", column: "last_accessed_question_id", on_delete: :nullify
-  add_foreign_key "progresses", "subjects", on_delete: :cascade
-  add_foreign_key "progresses", "users", on_delete: :cascade
   add_foreign_key "question_list_items", "question_lists", on_delete: :cascade
   add_foreign_key "question_list_items", "questions", on_delete: :cascade
   add_foreign_key "question_lists", "question_lists", column: "forked_from_id", on_delete: :nullify
@@ -174,6 +186,9 @@ ActiveRecord::Schema.define(version: 2021_12_12_051943) do
   add_foreign_key "questions", "chapters"
   add_foreign_key "records", "questions", on_delete: :cascade
   add_foreign_key "records", "users", on_delete: :cascade
+  add_foreign_key "subject_progresses", "chapters", column: "last_accessed_chapter_id", on_delete: :nullify
+  add_foreign_key "subject_progresses", "subjects", on_delete: :cascade
+  add_foreign_key "subject_progresses", "users", on_delete: :cascade
   add_foreign_key "tags", "questions", on_delete: :cascade
   add_foreign_key "tags", "users", on_delete: :cascade
 end

@@ -1,6 +1,6 @@
-class ProgressSerializer < ActiveModel::Serializer
+class SubjectProgressSerializer < ActiveModel::Serializer
   attributes :progress_count, :updated_at
-  has_one :last_accessed_question
+  has_one :last_accessed_chapter
 
   def progress_count
     object.user.records.joins(question: [:chapter])
