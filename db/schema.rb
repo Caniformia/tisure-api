@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_26_080040) do
+ActiveRecord::Schema.define(version: 2021_12_12_051943) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -66,6 +66,18 @@ ActiveRecord::Schema.define(version: 2021_11_26_080040) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["question_id"], name: "index_comments_on_question_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
+  create_table "progresses", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "subject_id", null: false
+    t.integer "last_accessed_question_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["last_accessed_question_id"], name: "index_progresses_on_last_accessed_question_id"
+    t.index ["subject_id"], name: "index_progresses_on_subject_id"
+    t.index ["user_id", "subject_id"], name: "index_progresses_on_user_id_and_subject_id", unique: true
+    t.index ["user_id"], name: "index_progresses_on_user_id"
   end
 
   create_table "question_list_items", force: :cascade do |t|
@@ -152,6 +164,9 @@ ActiveRecord::Schema.define(version: 2021_11_26_080040) do
   add_foreign_key "choices", "questions"
   add_foreign_key "comments", "questions", on_delete: :cascade
   add_foreign_key "comments", "users", on_delete: :cascade
+  add_foreign_key "progresses", "questions", column: "last_accessed_question_id", on_delete: :nullify
+  add_foreign_key "progresses", "subjects", on_delete: :cascade
+  add_foreign_key "progresses", "users", on_delete: :cascade
   add_foreign_key "question_list_items", "question_lists", on_delete: :cascade
   add_foreign_key "question_list_items", "questions", on_delete: :cascade
   add_foreign_key "question_lists", "question_lists", column: "forked_from_id", on_delete: :nullify

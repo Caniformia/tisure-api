@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   mount_devise_token_auth_for 'User', at: 'auth'
   resources :subjects, shallow: true do
+    get 'progress', to: 'progresses#show'
+    match 'progress', to: 'progresses#update', via: [:patch, :put]
     resources :chapters, except: :index do
       resources :questions, except: :index do
         resources :choices, except: [:index, :show] do
