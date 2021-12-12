@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_12_063245) do
+ActiveRecord::Schema.define(version: 2021_12_12_065331) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -164,8 +164,10 @@ ActiveRecord::Schema.define(version: 2021_12_12_063245) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "is_admin", default: false, null: false
+    t.integer "last_accessed_subject_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["last_accessed_subject_id"], name: "index_users_on_last_accessed_subject_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
   end
@@ -191,4 +193,5 @@ ActiveRecord::Schema.define(version: 2021_12_12_063245) do
   add_foreign_key "subject_progresses", "users", on_delete: :cascade
   add_foreign_key "tags", "questions", on_delete: :cascade
   add_foreign_key "tags", "users", on_delete: :cascade
+  add_foreign_key "users", "subjects", column: "last_accessed_subject_id", on_delete: :nullify
 end

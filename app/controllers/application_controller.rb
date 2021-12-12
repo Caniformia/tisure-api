@@ -5,8 +5,9 @@ class ApplicationController < ActionController::API
 
   protected
     def configure_permitted_parameters
-      devise_parameter_sanitizer.permit(:sign_up, keys: [:nickname])
-      devise_parameter_sanitizer.permit(:account_update, keys: [:nickname])
+      new_params = [:nickname, :last_accessed_subject_id]
+      devise_parameter_sanitizer.permit :sign_up, keys: new_params
+      devise_parameter_sanitizer.permit :account_update, keys: new_params
     end
 
     def record_stats(records)

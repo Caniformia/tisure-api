@@ -11,4 +11,5 @@ class User < ActiveRecord::Base
   has_many :comments
   has_many :question_lists, foreign_key: "owner_id"
   has_many :tags
+  belongs_to :last_accessed_subject, class_name: :Subject, optional: true
 end
